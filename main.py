@@ -1,5 +1,5 @@
 import telebot
-import time
+from time import sleep
 from datetime import datetime
 
 from key import token
@@ -28,11 +28,18 @@ def get_indicated_time(message):
 
 
 def send_notice(chat_id, indicated_time):
-    while indicated_time != str(datetime.now().hour) + str(datetime.now().minute):
-        pass
+    if indicated_time == str(datetime.now().hour) + str(datetime.now().minute):
+        text = "test"
+        bot.send_message(chat_id, text, parse_mode="Markdown")
 
-    text = "test"
-    bot.send_message(chat_id, text, parse_mode="Markdown")
+
+def is_correct_time(time):
+    new_time = time.split(':')
+    if len(new_time) == 2:
+        if int(new_time[0]) in range(0, 24) and int(new_time[1]) in range(0, 60):
+            return True
+
+    return False
 
 
 bot.polling(none_stop=True, interval=0)
