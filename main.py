@@ -16,15 +16,24 @@ def send_welcome(message):
 
 @bot.message_handler(content_types=['text'])
 def get_indicated_time(message):
-    indicated_time = message.text
+    try:
+        indicated_time = message.text
+        if not is_correct_time(indicated_time):
+            raise ValueError
 
-    text = f"Время выбрано. Расписание придет в {indicated_time}"
-    chat_id = message.chat.id
-    bot.send_message(chat_id, text, parse_mode="Markdown", reply_markup=None)
+        indicated_time = ':'.join(map(str, (map(int, indicated_time.split(':')))))
 
-    while True:
-        send_notice(chat_id, indicated_time)
-        time.sleep(60)
+        text = f"Время выбрано. Расписание придет в {indicated_time}"
+        bot.send_message(message.chat.id, text, parse_mode="Markdown", reply_markup=None)
+
+        while True:
+            send_notice(message.chat.id, indicated_time)
+            sleep(60)
+
+    except ValueError:
+        bot.send_message(message.chat.id,
+                         "Ошибка, введите время в виде hh:mm",
+                         parse_mode="Markdown")
 
 
 def send_notice(chat_id, indicated_time):
