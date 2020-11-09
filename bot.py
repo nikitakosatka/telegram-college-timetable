@@ -24,7 +24,7 @@ def get_indicated_time(message):
 
         indicated_time = ':'.join(map(str, (map(int, indicated_time.split(':')))))
 
-        text = f"Время выбрано. Расписание придет в {indicated_time}"
+        text = f"Время выбрано. Расписание придет в {indicated_time.split(':')[0]}ч. {indicated_time.split(':')[1]}м."
         bot.send_message(message.chat.id, text, parse_mode="Markdown", reply_markup=None)
 
         while True:
