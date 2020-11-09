@@ -3,6 +3,7 @@ from time import sleep
 from datetime import datetime
 
 from key import token
+from excel_parser import get_day_timetable
 
 bot = telebot.TeleBot(token)
 
@@ -38,7 +39,12 @@ def get_indicated_time(message):
 
 def send_notice(chat_id, indicated_time):
     if indicated_time == f"{str(datetime.now().hour)}:{str(datetime.now().minute)}":
-        text = indicated_time
+        if datetime.today().isocalendar()[1] + 1 % 2 == 0:
+            is_odd = False
+        else:
+            is_odd = True
+
+        text = get_day_timetable(datetime.today().weekday() + 1, is_odd)
         bot.send_message(chat_id, text, parse_mode="Markdown")
 
 
