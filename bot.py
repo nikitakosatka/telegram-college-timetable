@@ -27,9 +27,14 @@ def get_indicated_time(message):
         text = f"Время выбрано. Расписание придет в {indicated_time.split(':')[0]}ч. {indicated_time.split(':')[1]}м."
         bot.send_message(message.chat.id, text, parse_mode="Markdown", reply_markup=None)
 
+        was_sent = False
+
         while True:
-            send_notice(message.chat.id, indicated_time)
-            sleep(60)
+            if indicated_time == f"{str(datetime.now().hour)}:{str(datetime.now().minute)}":
+                send_notice(message.chat.id, was_sent)
+                was_sent = True
+            else:
+                was_sent = False
 
     except ValueError:
         bot.send_message(message.chat.id,
@@ -37,8 +42,8 @@ def get_indicated_time(message):
                          parse_mode="Markdown")
 
 
-def send_notice(chat_id, indicated_time):
-    if indicated_time == f"{str(datetime.now().hour)}:{str(datetime.now().minute)}":
+def send_notice(chat_id, was_sent):
+    if not was_sent:
         if datetime.today().isocalendar()[1] + 1 % 2 == 0:
             is_odd = False
         else:
