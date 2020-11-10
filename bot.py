@@ -11,7 +11,7 @@ bot = telebot.TeleBot(token)
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
     bot.send_message(message.chat.id,
-                     "Введите время, в которое будет приходить расписние, в виде hh:mm",
+                     "Введите время, в которое будет приходить расписание, в виде hh:mm",
                      parse_mode="Markdown")
 
 

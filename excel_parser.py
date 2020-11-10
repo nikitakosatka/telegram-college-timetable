@@ -21,6 +21,8 @@ def get_day_timetable(day, is_odd):
     text = ''
 
     for subject in range(4):
+        if day == 7:
+            return '- / -'
         if sheet[f'{week_days[day - 1][0]}{start_row + subject * 2}'].value:
             text += str(sheet[f'{week_days[day - 1][0]}{start_row + subject * 2}'].value) + ' '
             if sheet[f'{week_days[day - 1][1]}{start_row + subject * 2}'].value:
