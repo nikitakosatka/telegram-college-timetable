@@ -1,5 +1,4 @@
 import telebot
-from time import sleep
 from datetime import datetime
 
 from key import token

@@ -3,7 +3,6 @@ import openpyxl
 wb = openpyxl.load_workbook(filename='timetable.xlsx')
 sheet = wb['Лист1']
 
-odd_week = []
 week_days = ['ABCDE', 'GHIJK', 'MNOPQ', 'ABCDE', 'GHIJK', 'MNOPQ']
 
 
