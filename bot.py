@@ -2,7 +2,7 @@ import telebot
 from datetime import datetime
 
 from key import token
-from excel_parser import get_day_timetable
+from excel_parser import get_consultation_info
 
 bot = telebot.TeleBot(token)
 
@@ -17,23 +17,8 @@ def send_welcome(message):
 @bot.message_handler(content_types=['text'])
 def get_indicated_time(message):
     try:
-        indicated_time = message.text
-        if not is_correct_time(indicated_time):
-            raise ValueError
-
-        indicated_time = ':'.join(map(str, (map(int, indicated_time.split(':')))))
-
-        text = f"Время выбрано. Расписание придет в {indicated_time.split(':')[0]}ч. {indicated_time.split(':')[1]}м."
-        bot.send_message(message.chat.id, text, parse_mode="Markdown", reply_markup=None)
-
-        was_sent = False
-
-        while True:
-            if indicated_time == f"{str(datetime.now().hour)}:{str(datetime.now().minute)}":
-                send_notice(message.chat.id, was_sent)
-                was_sent = True
-            else:
-                was_sent = False
+        text = get_consultation_info(message.text)
+        bot.send_message(message.chat.id, text, parse_mode="Markdown")
 
     except ValueError:
         bot.send_message(message.chat.id,
@@ -48,7 +33,7 @@ def send_notice(chat_id, was_sent):
         else:
             is_odd = True
 
-        text = get_day_timetable(datetime.today().weekday() + 1, is_odd)
+        text = get_consultation_info(datetime.today().weekday() + 1, is_odd)
         bot.send_message(chat_id, text, parse_mode="Markdown")
 
 
