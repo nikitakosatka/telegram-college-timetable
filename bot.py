@@ -9,7 +9,7 @@ bot = telebot.TeleBot(token)
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
     bot.send_message(message.chat.id,
-                     "Введите время, в которое будет приходить расписание, в виде hh:mm",
+                     "Введите фамилию преподавателя, который ведет консультации",
                      parse_mode="Markdown")
 
 
