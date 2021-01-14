@@ -14,7 +14,7 @@ def send_welcome(message):
 
 
 @bot.message_handler(content_types=['text'])
-def get_indicated_time(message):
+def send_message(message):
     try:
         surname = message.text[0].upper() + message.text[1:].lower()
         text = get_consultation_info(surname)
