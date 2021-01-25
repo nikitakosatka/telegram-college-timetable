@@ -21,4 +21,5 @@ def send_message(message):
         bot.send_message(message.chat.id, text, parse_mode="Markdown")
 
     except KeyError:
-        bot.send_message(message.chat.id, "Введите фамилию преподавателя", parse_mode="Markdown")
+        bot.send_message(message.chat.id, "Преподаватель не найден. Введите фамилию еще раз",
+                         parse_mode="Markdown")
