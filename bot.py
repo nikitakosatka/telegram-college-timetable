@@ -1,9 +1,12 @@
 import telebot
 
 from key import token
-from excel_parser import get_consultation_info
+from excel_parser import get_this_week_consultation_info, get_full_consultation_info
 
 bot = telebot.TeleBot(token)
+
+custom_keyboard = [['top-left', 'top-right'],
+                   ['bottom-left', 'bottom-right']]
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -16,8 +19,11 @@ def send_welcome(message):
 @bot.message_handler(content_types=['text'])
 def send_message(message):
     try:
-        surname = message.text[0].upper() + message.text[1:].lower()
-        text = get_consultation_info(surname)
+        surname = message.text.split()[0][0].upper() + message.text.split()[0][1:].lower()
+        if message.text[-1] == '1':
+            text = get_this_week_consultation_info(surname)
+        else:
+            text = get_full_consultation_info(surname)
         bot.send_message(message.chat.id, text, parse_mode="Markdown")
 
     except KeyError:
