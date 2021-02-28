@@ -20,7 +20,7 @@ def send_welcome(message):
 def send_message(message):
     try:
         surname = message.text.split()[0][0].upper() + message.text.split()[0][1:].lower()
-        if message.text[-1] == '1':
+        if message.text.split()[-1].lower() in ['ближайшая', 'б', '1']:
             text = get_this_week_consultation_info(surname)
         else:
             text = get_full_consultation_info(surname)

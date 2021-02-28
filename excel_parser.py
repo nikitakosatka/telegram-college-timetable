@@ -1,5 +1,5 @@
 import openpyxl
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class Week:
@@ -7,7 +7,7 @@ class Week:
         self.week_is_odd = False
 
     def is_odd(self):
-        if datetime.today().isocalendar()[1] + 1 % 2 == 0:
+        if datetime.today().isocalendar()[1] + 1 % 2 == 1:
             self.week_is_odd = False
         else:
             self.week_is_odd = True
@@ -41,10 +41,20 @@ def get_full_consultation_info(surname):
 
 def get_this_week_consultation_info(surname):
     week = Week()
-    text = f'{surname}: {consultations[surname][0]}' + "Консультация на этой неделе:\n"
+    weekdays = 'пн вт ср чт пт сб вс'.split()
+    text = f'{surname}: {consultations[surname][0]}' + "Ближайшая консультация:\n"
+    date = datetime.today().weekday()
+    i = 0
     if week.is_odd():
-        text += consultations[surname][1][0] + consultations[surname][2][0]
+        while (datetime.date(datetime.today()) + timedelta(i)).weekday() != weekdays.index(consultations[surname][1][0].split()[-1][:-1]):
+            i += 1
+        date = (datetime.date(datetime.today()) + timedelta(i))
+        text += consultations[surname][1][0][:-1] + ' ' + date.strftime("%d.%m.%Y") + '\n' + consultations[surname][2][0]
     else:
-        text += consultations[surname][2][0] + consultations[surname][2][1]
+        while (datetime.date(datetime.today()) + timedelta(i)).weekday() != weekdays.index(
+                consultations[surname][1][1].split()[-1][:-1]):
+            i += 1
+        date = (datetime.date(datetime.today()) + timedelta(i))
+        text += consultations[surname][1][1][:-1] + ' ' + date.strftime("%d.%m.%Y") + '\n' + consultations[surname][2][1]
 
     return text
