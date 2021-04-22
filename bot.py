@@ -9,10 +9,18 @@ custom_keyboard = [['top-left', 'top-right'],
                    ['bottom-left', 'bottom-right']]
 
 
-@bot.message_handler(commands=['start', 'help'])
+@bot.message_handler(commands=['start'])
 def send_welcome(message):
     bot.send_message(message.chat.id,
                      "Введите фамилию преподавателя, который ведет консультации",
+                     parse_mode="Markdown")
+
+
+@bot.message_handler(commands=['help'])
+def send_help(message):
+    bot.send_message(message.chat.id,
+                     "Введите фамилию преподавателя, который ведет консультации, чтобы получить расписание консультаций\n"
+                     "Чтобы получить ближайшую консультацию, введите: \"Фамилия преподавателя\" б/ближайшая",
                      parse_mode="Markdown")
 
 
